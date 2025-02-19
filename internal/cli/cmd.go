@@ -32,7 +32,7 @@ func init() {
 }
 
 func initConfig() {
-	c := ".spotyfind2.yml"
+	c := "spotifind.yml"
 	viper.SetConfigType("yaml")
 	viper.SetConfigName(c)
 
@@ -40,7 +40,7 @@ func initConfig() {
 	viper.AddConfigPath("$HOME")
 	viper.AddConfigPath(".")
 
-	viper.SetEnvPrefix("spotyfind2")
+	viper.SetEnvPrefix("spotifind")
 	viper.BindEnv("spotify_client_id")
 	viper.BindEnv("spotify_client_secret")
 
