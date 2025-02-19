@@ -12,18 +12,18 @@ Works pretty similar to paid services like PlaylistSupply and Distrokid's playli
 # Installation
 ## CLI
 ### Windows
-1. Download the latest release for Windows from the [releases page](https://github.com/je09/spotifind/releases) the name has to be "spotifind-cli-windows.exe.zip" or "spotifind-cli-windows-arm64.exe.zip" for ARM. If you do not recognize what arm64 is, you should download the first one.
+1. Download the latest release for Windows from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-cli-windows.exe.zip" or "spotifind-cli-windows-arm64.exe.zip" for ARM. If you do not recognize what arm64 is, you should download the first one.
 2. Extract the downloaded file in your User's folder or any other folder you're comfortable with.
 3. Download and save "[spotyfind2.yml](https://github.com/je09/spotifind)" file to the directory where the spotifind .exe file from the previous step is located.
 
 ### macOS
-1. Download the latest release for macOS from the [releases page](https://github.com/je09/spotifind/releases) the name has to be "spotifind-cli-darwin.zip" or "spotifind-cli-darwin-arm64.zip" for Apple Silicon (M1,M2,etc.).
+1. Download the latest release for macOS from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-cli-darwin.zip" or "spotifind-cli-darwin-arm64.zip" for Apple Silicon (M1,M2,etc.).
 2. Extract the downloaded file in your User's folder or any other folder you're comfortable with.
 3. Download and save "[spotyfind2.yml](https://github.com/je09/spotifind)" file to the directory where the spotifind binary file from the previous step is located.
 
 ### Linux
 If you use GNU/Linux based OS, I'm not even sure if you need my guidance, but here it is anyway:
-1. Download the latest release for Linux from the [releases page](https://github.com/je09/spotifind/releases) the name has to be "spotifind-cli-linux.zip" or "spotifind-cli-linux-arm64.zip" for ARM.
+1. Download the latest release for Linux from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-cli-linux.zip" or "spotifind-cli-linux-arm64.zip" for ARM.
 2. Extract the downloaded file in your User's folder or any other folder you're comfortable with.
 3. Download and save "[spotyfind2.yml](https://github.com/je09/spotifind)" file to the directory where the spotifind binary file from the previous step is located.
 
