@@ -1,7 +1,6 @@
 html {
-    background-color: grey;
+    background-color: RGBA(180, 180, 180, 1);
     text-align: center;
-    color: white;
 }
 
 body {
@@ -49,4 +48,17 @@ body {
 
 .margin-top {
     margin-top: 10px;
+}
+
+.table-outer {
+    overflow-x: auto;
+    height: calc(100vh - 100px); /* full height minus header and footer */
+}
+
+header {
+    height: 60px;
+}
+
+footer {
+    height: 40px;
 }
