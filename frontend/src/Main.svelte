@@ -16,6 +16,7 @@
     let searchQuery = ""
     let ignoreQuery = ""
     let marketInfo = ""
+    let csvFileName = ""
 
     let marketPopular = false
     let marketUnpopular = false
@@ -45,7 +46,7 @@
         }
 
         dispatch("search");
-        Search(searchQuery, ignoreQuery, marketInfo)
+        Search(searchQuery, ignoreQuery, marketInfo, csvFileName)
     }
 
     // Unselect all radio buttons if a market is selected from the dropdown.
@@ -62,27 +63,45 @@
         document.getElementById('marketSelector').value = ''
     }
 
+    function handleKeyDown(event) {
+        if (event.key === "Enter") {
+            PerformSearch();
+        }
+    }
+
+    function fromQueriesToCSVName(event) {
+        csvFileName = searchQuery.replace(/[^\p{L}\p{N} ]/gu, "").replace(/ /g, "_")
+    }
+
+    window.addEventListener('keydown', handleKeyDown);
 </script>
 
 <div class="main-screen">
+    <h3 class="result-text">Spotifind</h3>
     <div class="">
         <label class="block">
             Search Queries:
             <br>
-            <input autocomplete="off" bind:value={searchQuery} class="input" id="search" type="text"/>
+            <input autocomplete="off" spellcheck="false" autocorrect="off" bind:value={searchQuery} on:input={fromQueriesToCSVName} class="input" id="search" type="text"/>
         </label>
 
         <label class="block">
             Ignore Queries:
             <br>
-            <input autocomplete="off" bind:value={ignoreQuery} class="input" id="search" type="text"/>
+            <input autocomplete="off" spellcheck="false" autocorrect="off" bind:value={ignoreQuery} class="input" id="search" type="text"/>
+        </label>
+
+        <label class="block">
+            CSV File Name:
+            <br>
+            <input autocomplete="off" bind:value={csvFileName} class="input" id="search" type="text"/>
         </label>
 
         <label class="block">
             Market Info
             <br>
-            <input on:click={ClearSpecificMarket} type="radio" id="marketInfo" name="marketInfo" bind:value={marketPopular}> Popular
-            <input on:click={ClearSpecificMarket} type="radio" id="marketInfo" name="marketInfo" bind:value={marketUnpopular}> Unpopular
+            <input on:click={ClearSpecificMarket} type="radio" id="marketInfo" name="marketInfo" bind:value={marketPopular}> Popular Markets
+            <input on:click={ClearSpecificMarket} type="radio" id="marketInfo" name="marketInfo" bind:value={marketUnpopular}> Unpopular Markets
 
             <br>
             <br>
@@ -98,3 +117,13 @@
         <button class="button,block" on:click={PerformSearch}>Search</button>
     </div>
 </div>
+
+<style>
+    .result-text {
+        font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+    }
+
+    .main-screen {
+        overflow: hidden;
+    }
+</style>

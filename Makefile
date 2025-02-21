@@ -26,4 +26,24 @@ cli-windowsarm64:
 cli-all: cli-darwin64 cli-darwinarm64 cli-linux64 cli-linuxarm64 cli-windows64 cli-windowsarm64
 cli: cli-all
 
-build: cli
+# Build GUI for all platforms
+gui-darwin64:
+	echo "Building GUI for Darwin"
+	wails build -platform darwin/amd64
+
+# Build GUI for all platforms
+gui-darwinarm64:
+	echo "Building GUI for Darwin"
+	wails build -platform darwin/arm64
+
+gui-windows64:
+	echo "Building GUI for Windows"
+	wails build -platform windows/amd64
+
+gui-windowsarm64:
+	echo "Building GUI for Windows"
+	wails build -platform windows/arm64
+
+gui: gui-darwin64 gui-darwinarm64
+
+build: cli gui

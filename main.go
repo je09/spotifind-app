@@ -19,13 +19,12 @@ var assets embed.FS
 
 var configs []spotifind.SpotifindAuth
 
-type credsType struct {
-	Credits []spotifind.SpotifindAuth `yaml:"credits"`
+type config struct {
+	SaveLocation string                    `yaml:"saveLocation"`
+	Credits      []spotifind.SpotifindAuth `yaml:"credits"`
 }
 
 func main() {
-	initConfig()
-
 	// Create an instance of the app structure
 	app := NewApp()
 
@@ -52,28 +51,31 @@ func main() {
 	}
 }
 
-func initConfig() {
-	c := "spotifind.yml"
+func initConfig() (config, error) {
 	viper.SetConfigType("yaml")
-	viper.SetConfigName(c)
+	viper.SetConfigName("spotifind.yml")
+	viper.SetConfigName(".spotifind.yml")
 
-	//home, _ := os.UserHomeDir()
 	viper.AddConfigPath("$HOME")
+	viper.AddConfigPath("$HOME/spotifind")
+	viper.AddConfigPath("$HOME/.config/spotifind")
 	viper.AddConfigPath(".")
+
+	// For Windows
+	viper.AddConfigPath(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind", os.Getenv("$HOME")))
 
 	viper.SetEnvPrefix("spotifind")
 	viper.BindEnv("spotify_client_id")
 	viper.BindEnv("spotify_client_secret")
 
 	if err := viper.ReadInConfig(); err != nil {
-		fmt.Println("Error reading configs file:", err)
-		os.Exit(1)
+		return config{}, err
 	}
-	var creds credsType
-	err := viper.Unmarshal(&creds)
-	configs = creds.Credits
+	var cfg config
+	err := viper.Unmarshal(&cfg)
+	configs = cfg.Credits
 
-	// randomize configs order
+	//randomize configs order
 	for i := range configs {
 		j := rand.Intn(i + 1)
 		configs[i], configs[j] = configs[j], configs[i]
@@ -81,6 +83,8 @@ func initConfig() {
 	}
 
 	if err != nil {
-		return
+		return config{}, err
 	}
+
+	return cfg, nil
 }

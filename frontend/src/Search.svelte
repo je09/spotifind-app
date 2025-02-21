@@ -13,16 +13,18 @@
 
     LogInfo("Search results screen loaded");
 
-    WindowSetSize(500, 700);
+    WindowSetSize(600, 700);
     EventsOn("rcv:searchResult", (msg) => {
         let r = JSON.parse(msg);
+        LogInfo("Results received: " + JSON.stringify(r.Playlist));
         results = [...results, r];
-        LogInfo("Results received: " + results.Playlist.Name);
     });
     EventsOn("rcv:progress", (msg) => {
         let p = JSON.parse(msg);
+        if (p.Done > p.Total) {
+            p.Total = p.Done;
+        }
         progress = p;
-        LogInfo("Progress received: " + p.Done + " of " + p.Total);
     });
 
     ReturnResults();
@@ -31,10 +33,12 @@
 </script>
 
 <div class="results-window">
-    <h3>Results</h3>
-    <p>Progress: {progress.Done} of {progress.Total}</p>
-    <div class="progress-bar-outer">
-        <div class="progress-bar-inner" style="width: {progress.Done / progress.Total * 100}%"></div>
+    <div class="results">
+        <h3 class="result-text">Results</h3>
+        <p class="result-text">Progress: {progress.Done} of {progress.Total}</p>
+        <div class="progress-indicator segmented">
+            <div class="progress-indicator-bar" style="width: {progress.Done / progress.Total * 100}%"></div>
+        </div>
     </div>
     <div class="table-outer">
         <table>
@@ -67,33 +71,33 @@
 </div>
 
 <style>
+    .result-text {
+        font-family: "Pixelated MS Sans Serif", Arial, sans-serif;
+    }
+
+    .results {
+        height: 180px;
+    }
+
     .results-window {
-        margin-top: 20px;
-        overflow-x: auto;
+        overflow: hidden; /* Hide scroll on the main screen */
+        display: flex;
+        flex-direction: column;
+        height: 100vh; /* Full viewport height */
     }
-    .progress-bar-outer {
-        width: 99%;
-        background-color: #c0c0c0;
-        border: 2px solid #808080;
-        border-radius: 2px;
-        padding: 2px;
-        box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000;
-        margin-bottom: 10px;
-        margin: 0 auto 10px auto; /* Center align */
+
+    .table-outer {
+        flex-grow: 1; /* Take up remaining space */
+        overflow-y: auto; /* Enable vertical scrolling */
     }
-    .progress-bar-inner {
-        height: 20px;
-        background-color: #000080;
-        width: 0;
-        transition: width 0.3s;
-        box-shadow: inset 1px 1px 0 #ffffff, inset -1px -1px 0 #000000;
-    }
+
     table {
         width: 100%;
         border-collapse: collapse;
     }
+
     th, td {
-        border: 1px solid #ccc;
+        border: 1px solid;
         padding: 5px;
         text-align: left;
         white-space: nowrap;
