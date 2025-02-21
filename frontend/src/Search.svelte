@@ -2,7 +2,7 @@
     import {
         WindowSetSize,
         EventsOn,
-        LogInfo
+        LogInfo, BrowserOpenURL
     } from "../wailsjs/runtime/runtime.js";
     import {
         ReturnResults,
@@ -62,7 +62,7 @@
                     <td>{result.Playlist.Contacts}</td>
                     <td>{result.Playlist.Description}</td>
                     <td>{result.Playlist.Region}</td>
-                    <td><a href={result.ExternalURLs} target="_blank">Link</a></td>
+                    <td><a on:click={() => BrowserOpenURL(result.Playlist.ExternalURLs['spotify'])} href="#" target="_blank">Link</a></td>
                 </tr>
             {/each}
             </tbody>

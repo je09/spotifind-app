@@ -3,7 +3,7 @@ module github.com/je09/spotifind-app
 go 1.23.2
 
 require (
-	github.com/je09/spotifind v0.2.4
+	github.com/je09/spotifind v0.2.6
 	github.com/labstack/gommon v0.4.2
 	github.com/spf13/cobra v1.9.1
 	github.com/spf13/viper v1.19.0

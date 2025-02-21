@@ -88,32 +88,26 @@ func (a *SpotifindApp) Search(q, ignore, market, csvFileName string) string {
 
 	runtime.LogInfof(a.ctx, "Searching for: %v, ignoring: %v, on market: %s", queries, ignores, market)
 
-	a.searchOnce.Do(func() {
+	go a.searchOnce.Do(func() {
 		switch market {
 		case "popular":
-			go func() {
-				err := a.s.SearchPlaylistPopular(a.playlistChan, a.progChan, queries, ignores)
-				if err != nil {
-					a.ErrorHandler(err)
-					log.Errorf("Error searching popular playlists: %v", err)
-				}
-			}()
+			err := a.s.SearchPlaylistPopular(a.playlistChan, a.progChan, queries, ignores)
+			if err != nil {
+				a.ErrorHandler(err)
+				log.Errorf("Error searching popular playlists: %v", err)
+			}
 		case "unpopular":
-			go func() {
-				err := a.s.SearchPlaylistUnpopular(a.playlistChan, a.progChan, queries, ignores)
-				if err != nil {
-					a.ErrorHandler(err)
-					log.Errorf("Error searching unpopular playlists: %v", err)
-				}
-			}()
+			err := a.s.SearchPlaylistUnpopular(a.playlistChan, a.progChan, queries, ignores)
+			if err != nil {
+				a.ErrorHandler(err)
+				log.Errorf("Error searching unpopular playlists: %v", err)
+			}
 		default:
-			go func() {
-				err := a.s.SearchPlaylistForMarket(a.playlistChan, a.progChan, market, queries, ignores)
-				if err != nil {
-					a.ErrorHandler(err)
-					log.Errorf("Error searching playlists for market %s: %v", market, err)
-				}
-			}()
+			err := a.s.SearchPlaylistForMarket(a.playlistChan, a.progChan, market, queries, ignores)
+			if err != nil {
+				a.ErrorHandler(err)
+				log.Errorf("Error searching playlists for market %s: %v", market, err)
+			}
 		}
 	})
 
@@ -135,6 +129,9 @@ func (a *SpotifindApp) ReturnResults() {
 			if a.IsPlaylistKnown(p.Playlist.ExternalURLs["spotify"]) {
 				runtime.LogInfof(a.ctx, "Playlist already known: %s", p.Playlist.ExternalURLs["spotify"])
 				continue
+			}
+			if p.Playlist.Contacts == nil {
+				p.Playlist.Contacts = []string{"N/A"}
 			}
 			a.csv.WriteToFile(p.Playlist)
 			mp, _ := json.Marshal(p)

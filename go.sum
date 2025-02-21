@@ -122,8 +122,8 @@ github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
 github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e h1:Q3+PugElBCf4PFpxhErSzU3/PY5sFL5Z6rfv4AbGAck=
 github.com/jchv/go-winloader v0.0.0-20210711035445-715c2860da7e/go.mod h1:alcuEEnZsY1WQsagKhZDsoPCRoOijYqhZvPwLG0kzVs=
-github.com/je09/spotifind v0.2.4 h1:RpOcIMueHTVZIB+uxGKosJE30CIIKTZ+yjAv/hUbDpg=
-github.com/je09/spotifind v0.2.4/go.mod h1:p9aR9C70mczrPgxwwMGe8UrNpAM/MXB/rNjyAuEDXQ0=
+github.com/je09/spotifind v0.2.6 h1:8X/zcKUrkV2Fz5JctYAD5fz+RHFz9bZq8H6HqeNcgpw=
+github.com/je09/spotifind v0.2.6/go.mod h1:p9aR9C70mczrPgxwwMGe8UrNpAM/MXB/rNjyAuEDXQ0=
 github.com/jstemmer/go-junit-report v0.0.0-20190106144839-af01ea7f8024/go.mod h1:6v2b51hI/fHJwM22ozAgKL4VKDeJcHhJFhtBdhmNjmU=
 github.com/jstemmer/go-junit-report v0.9.1/go.mod h1:Brl9GWCQeLvo8nXZwPNNblvFj/XSXhF0NWZEnDohbsk=
 github.com/kisielk/gotool v1.0.0/go.mod h1:XhKaO+MFFWcvkIS/tQcRk01m1F5IRFswLeQ+oQHNcck=

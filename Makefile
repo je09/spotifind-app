@@ -29,21 +29,29 @@ cli: cli-all
 # Build GUI for all platforms
 gui-darwin64:
 	echo "Building GUI for Darwin"
-	wails build -platform darwin/amd64
+	wails build -platform darwin/amd64 -o spotifind-gui-macos
 
 # Build GUI for all platforms
 gui-darwinarm64:
 	echo "Building GUI for Darwin"
-	wails build -platform darwin/arm64
+	wails build -platform darwin/arm64 -o spotifind-gui-macos-arm64
 
 gui-windows64:
 	echo "Building GUI for Windows"
-	wails build -platform windows/amd64
+	wails build -platform windows/amd64 -o spotifind-gui-windows
 
 gui-windowsarm64:
 	echo "Building GUI for Windows"
-	wails build -platform windows/arm64
+	wails build -platform windows/arm64 -o spotifind-gui-windows-arm64
 
-gui: gui-darwin64 gui-darwinarm64
+gui-linux64:
+	echo "Building GUI for Linux"
+	wails build -platform linux/amd64 -o spotifind-gui-linux
+
+gui-linuxarm64:
+	echo "Building GUI for Linux"
+	wails build -platform linux/arm64 -o spotifind-gui-linux-arm64
+
+gui: gui-darwin64 gui-darwinarm64 gui-windows64 gui-windowsarm64 gui-linux64 gui-linuxarm64
 
 build: cli gui
