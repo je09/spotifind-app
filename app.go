@@ -9,15 +9,24 @@ import (
 
 	"github.com/je09/spotifind"
 	"github.com/je09/spotifind-app/pkg/csv"
-
 	"github.com/labstack/gommon/log"
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+// SpotifindService interface
+type SpotifindService interface {
+	SearchPlaylistPopular(chan spotifind.SpotifindChan, chan spotifind.ProgressChan, []string, []string) error
+	SearchPlaylistUnpopular(chan spotifind.SpotifindChan, chan spotifind.ProgressChan, []string, []string) error
+	SearchPlaylistForMarket(chan spotifind.SpotifindChan, chan spotifind.ProgressChan, string, []string, []string) error
+	Reconnect(Config) error
+	Continue(chan spotifind.SpotifindChan, chan spotifind.ProgressChan) error
+}
+
 // SpotifindApp struct
 type SpotifindApp struct {
-	s   spotifind.Spotifinder
-	csv *csv.CsvHandler
+	s             spotifind.Spotifinder
+	csv           *csv.CsvHandler
+	configManager ConfigManager
 
 	KnownPlaylists []string
 	currentConfig  int
@@ -34,15 +43,16 @@ type SpotifindApp struct {
 // NewApp creates a new SpotifindApp application struct
 func NewApp() *SpotifindApp {
 	return &SpotifindApp{
-		playlistChan: make(spotifind.SpotifindChan),
-		progChan:     make(spotifind.ProgressChan),
+		configManager: &ConfigManagerImpl{},
+		playlistChan:  make(spotifind.SpotifindChan),
+		progChan:      make(spotifind.ProgressChan),
 	}
 }
 
 func (a *SpotifindApp) startup(ctx context.Context) {
 	a.ctx = ctx
 
-	cfg, err := initConfig()
+	cfg, err := a.configManager.InitConfig()
 	if err != nil {
 		a.Alert(fmt.Sprintf("Error reading config: %v", err))
 		panic(err)
