@@ -16,8 +16,9 @@ jobs:
       with: 
         go-version: '1.23'
     - run: "go install github.com/wailsapp/wails/v2/cmd/wails@latest"
-    - name: Install Dependencies
-      run: apt install gtk+-3.0 -y
+    - uses: ConorMacBride/install-package@v1
+      with:
+        apt: gtk+-3.0
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Build

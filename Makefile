@@ -40,8 +40,9 @@ gui-darwinarm64:
 
 gui-windows64:
 	echo "Building GUI for Windows"
-	wails build -platform windows/amd64 -o spotifind-gui-windows
+	env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ CGO_CXXFLAGS="-IC:\msys64\mingw64\include" wails build -ldflags '-extldflags "-static"' -skipbindings
 
+# unstable for now
 gui-windowsarm64:
 	echo "Building GUI for Windows"
 	wails build -platform windows/arm64 -o spotifind-gui-windows-arm64
@@ -55,7 +56,7 @@ gui-linuxarm64:
 	wails build -platform linux/arm64 -o spotifind-gui-linux-arm64
 
 gui-darwin: gui-darwin64 gui-darwinarm64
-gui-win: gui-windows64 gui-windowsarm64
+gui-win: gui-windows64
 gui-linux: gui-linux64 gui-linuxarm64
 
 gui: gui-linux gui-win # mac is not supported for cross-compilation

@@ -23,7 +23,6 @@ type ConfigManagerImpl struct{}
 func (c *ConfigManagerImpl) InitConfig() (Config, error) {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("spotifind.yml")
-	viper.SetConfigName(".spotifind.yml")
 
 	viper.AddConfigPath("$HOME")
 	viper.AddConfigPath("$HOME/spotifind")
