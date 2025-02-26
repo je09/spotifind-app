@@ -16,6 +16,8 @@ jobs:
       with: 
         go-version: '1.23'
     - run: "go install github.com/wailsapp/wails/v2/cmd/wails@latest"
+    - name: Install Dependencies
+      run: apt install gtk+-3.0 -y
     - name: Checkout code
       uses: actions/checkout@v4
     - name: Build
@@ -33,7 +35,6 @@ jobs:
       with:
         name: binaries
         path: release/*
-
   release:
     name: Create GitHub Release
     needs: build
