@@ -28,6 +28,7 @@ type SpotifindApp struct {
 	csv           *csv.CsvHandler
 	configManager ConfigManager
 
+	cache          Cache
 	KnownPlaylists []string
 	currentConfig  int
 
@@ -44,6 +45,7 @@ type SpotifindApp struct {
 func NewApp() *SpotifindApp {
 	return &SpotifindApp{
 		configManager: &ConfigManagerImpl{},
+		cache:         NewCache(),
 		playlistChan:  make(spotifind.SpotifindChan),
 		progChan:      make(spotifind.ProgressChan),
 	}
@@ -51,6 +53,11 @@ func NewApp() *SpotifindApp {
 
 func (a *SpotifindApp) startup(ctx context.Context) {
 	a.ctx = ctx
+
+	err := a.cache.Load()
+	if err != nil {
+		panic(err)
+	}
 
 	cfg, err := a.configManager.InitConfig()
 	if err != nil {
@@ -184,15 +191,30 @@ func (a *SpotifindApp) ErrorHandler(err error) {
 	a.Alert(err.Error())
 }
 
-func (s *SpotifindApp) IsPlaylistKnown(externalURL string) bool {
-	if len(s.KnownPlaylists) == 0 {
+func (a *SpotifindApp) IsPlaylistKnown(externalURL string) bool {
+	if len(a.KnownPlaylists) == 0 {
 		return false
 	}
 
-	for _, p := range s.KnownPlaylists {
+	for _, p := range a.KnownPlaylists {
 		if p == externalURL {
 			return true
 		}
 	}
 	return false
+}
+
+func (a *SpotifindApp) LoadCachedSearch() []string {
+	return a.cache.PreviousSearch().Searches
+}
+
+func (a *SpotifindApp) LoadCachedIgnore() []string {
+	return a.cache.PreviousSearch().Ignores
+}
+
+func (a *SpotifindApp) SaveCache(search, ignore string) {
+	err := a.cache.Append(search, ignore)
+	if err != nil {
+		runtime.LogErrorf(a.ctx, "Error saving cache: %v", err)
+	}
 }

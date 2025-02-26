@@ -30,11 +30,13 @@ cli: cli-all
 gui-darwin64:
 	echo "Building GUI for Darwin"
 	wails build -platform darwin/amd64 -o spotifind-gui-macos
+	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos.app
 
 # Build GUI for all platforms
 gui-darwinarm64:
 	echo "Building GUI for Darwin"
 	wails build -platform darwin/arm64 -o spotifind-gui-macos-arm64
+	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos-arm64.app
 
 gui-windows64:
 	echo "Building GUI for Windows"

@@ -4,7 +4,13 @@
         EventsOn,
         LogInfo
     } from "../wailsjs/runtime/runtime.js";
-    import {Markets} from "../wailsjs/go/main/SpotifindApp.js";
+    import {
+        LoadCache,
+        LoadCachedIgnore,
+        LoadCachedSearch,
+        Markets,
+        SaveCache
+    } from "../wailsjs/go/main/SpotifindApp.js";
     import {Search} from "../wailsjs/go/main/SpotifindApp.js";
     import {Alert} from "../wailsjs/go/main/SpotifindApp.js";
     import { createEventDispatcher } from 'svelte';
@@ -12,6 +18,7 @@
     LogInfo("Main screen loaded");
 
     const dispatch = createEventDispatcher();
+
 
     let searchQuery = ""
     let ignoreQuery = ""
@@ -22,10 +29,20 @@
     let marketUnpopular = false
     let allMarkets = []
 
+    let cachedSearches = []
+    let cachedIgnores = []
+
+
+    async function getCache() {
+        cachedSearches = await LoadCachedSearch()
+        cachedIgnores = await LoadCachedIgnore()
+    }
+
     async function getMarkets() {
         allMarkets = await Markets()
     }
     getMarkets()
+    getCache()
 
     function PerformSearch() {
         if (marketPopular) {
@@ -46,13 +63,14 @@
         }
 
         dispatch("search");
+        SaveCache(searchQuery, ignoreQuery)
         Search(searchQuery, ignoreQuery, marketInfo, csvFileName)
     }
 
     // Unselect all radio buttons if a market is selected from the dropdown.
     function UnselectMarketRadioButtons() {
-        var marketInfo = document.getElementsByName('marketInfo');
-        for (var i = 0; i < marketInfo.length; i++) {
+        const marketInfo = document.getElementsByName('marketInfo');
+        for (let i = 0; i < marketInfo.length; i++) {
             marketInfo[i].checked = false;
         }
         marketPopular = false
@@ -82,13 +100,23 @@
         <label class="block">
             Search Queries:
             <br>
-            <input autocomplete="off" spellcheck="false" autocorrect="off" bind:value={searchQuery} on:input={fromQueriesToCSVName} class="input" id="search" type="text"/>
+            <input list="searchResults" spellcheck="false" autocorrect="off" bind:value={searchQuery} on:input={fromQueriesToCSVName} class="input" id="search" type="text"/>
+            <datalist id="searchResults">
+                {#each cachedSearches as item}
+                    <option value={item}></option>
+                {/each}
+            </datalist>
         </label>
 
         <label class="block">
             Ignore Queries:
             <br>
-            <input autocomplete="off" spellcheck="false" autocorrect="off" bind:value={ignoreQuery} class="input" id="search" type="text"/>
+            <input list="ignoreResults" spellcheck="false" autocorrect="off" bind:value={ignoreQuery} class="input" id="search" type="text"/>
+            <datalist id="ignoreResults">
+                {#each cachedIgnores as item}
+                    <option value={item}></option>
+                {/each}
+            </datalist>
         </label>
 
         <label class="block">
