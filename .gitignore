@@ -6,3 +6,8 @@ _tools/
 main
 .spotifind.yml
 /spotifind.yml
+build/bin
+node_modules
+frontend/dist
+/build/
+/pkg/mod/

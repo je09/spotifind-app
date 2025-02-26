@@ -1,0 +1,54 @@
+html {
+    background-color: RGBA(180, 180, 180, 1);
+    text-align: center;
+}
+
+body {
+    margin: 0;
+    color: white;
+}
+
+
+#app {
+    height: 100vh;
+    text-align: center;
+}
+
+.grid {
+    display: block;
+    width: 100%;
+}
+
+.block {
+    display: block;
+    margin-top: 15px;
+}
+
+.input {
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    height: 30px;
+    width: 75%;
+    line-height: 30px;
+    padding: 0 10px;
+    background-color: rgba(240, 240, 240, 1);
+    -webkit-font-smoothing: antialiased;
+}
+
+.margin-top {
+    margin-top: 10px;
+}
+
+.table-outer {
+    overflow-x: auto;
+    height: calc(100vh - 100px); /* full height minus header and footer */
+}
+
+header {
+    height: 60px;
+}
+
+footer {
+    height: 40px;
+}
