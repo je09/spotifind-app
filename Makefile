@@ -54,6 +54,10 @@ gui-linuxarm64:
 	echo "Building GUI for Linux"
 	wails build -platform linux/arm64 -o spotifind-gui-linux-arm64
 
-gui: gui-darwin64 gui-darwinarm64 gui-windows64 gui-windowsarm64 gui-linux64 gui-linuxarm64
+gui-darwin: gui-darwin64 gui-darwinarm64
+gui-win: gui-windows64 gui-windowsarm64
+gui-linux: gui-linux64 gui-linuxarm64
+
+gui: gui-linux gui-win # mac is not supported for cross-compilation
 
 build: cli gui
