@@ -66,4 +66,4 @@ gui-linux: clean gui-linux64 gui-linuxarm64
 
 gui: gui-darwin gui-win
 
-build: gui cli
+build: cli
