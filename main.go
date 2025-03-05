@@ -20,19 +20,20 @@ var configs []spotifind.SpotifindAuth
 
 func main() {
 	l := NewLogger()
-	l.Info(fmt.Sprintf("Starting spotifind-gui version: %s", Version))
+	l.Info("starting spotifind-gui version: " + Version)
 
 	// Create an instance of the app structure
 	app := NewApp()
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:     "spotifind-gui",
-		Width:     400,
-		Height:    400,
-		MinWidth:  300,
-		MinHeight: 350,
-		LogLevel:  logger.DEBUG,
+		Title:              "spotifind-gui",
+		Width:              400,
+		Height:             400,
+		MinWidth:           300,
+		MinHeight:          350,
+		LogLevel:           logger.DEBUG,
+		LogLevelProduction: logger.INFO,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
