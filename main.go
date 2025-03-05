@@ -27,12 +27,13 @@ func main() {
 
 	// Create application with options
 	err := wails.Run(&options.App{
-		Title:     "spotifind-gui",
-		Width:     400,
-		Height:    400,
-		MinWidth:  300,
-		MinHeight: 350,
-		LogLevel:  logger.DEBUG,
+		Title:              "spotifind-gui",
+		Width:              400,
+		Height:             400,
+		MinWidth:           300,
+		MinHeight:          350,
+		LogLevel:           logger.DEBUG,
+		LogLevelProduction: logger.INFO,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},

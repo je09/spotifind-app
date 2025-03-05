@@ -46,15 +46,16 @@ func NewLogger() *Logger {
 		Filename:   path,
 		MaxSize:    10, // megabytes
 		MaxBackups: 3,
-		MaxAge:     28,   //days
-		Compress:   true, // disabled by default
+		MaxAge:     28, //days
 	}
+	defer rotatingLogger.Close()
 
 	// Create a multi-writer for console and file logging.
 	multiWriter := io.MultiWriter(os.Stdout, rotatingLogger)
 
 	// Create a logger that writes to both stdout and the log file.
 	logger := slog.New(slog.NewTextHandler(multiWriter, &slog.HandlerOptions{Level: slog.LevelDebug}))
+	logger.Info("Saving logs to " + path)
 
 	return &Logger{
 		log: logger,
