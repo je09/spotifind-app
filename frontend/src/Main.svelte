@@ -5,11 +5,11 @@
         LogInfo
     } from "../wailsjs/runtime/runtime.js";
     import {
-        LoadCache,
         LoadCachedIgnore,
         LoadCachedSearch,
         Markets,
-        SaveCache
+        SaveCache,
+        CheckForNewRelease
     } from "../wailsjs/go/main/SpotifindApp.js";
     import {Search} from "../wailsjs/go/main/SpotifindApp.js";
     import {Alert} from "../wailsjs/go/main/SpotifindApp.js";
@@ -90,6 +90,8 @@
     function fromQueriesToCSVName(event) {
         csvFileName = searchQuery.replace(/[^\p{L}\p{N} ]/gu, "").replace(/ /g, "_")
     }
+
+    CheckForNewRelease()
 
     window.addEventListener('keydown', handleKeyDown);
 </script>

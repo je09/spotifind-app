@@ -24,9 +24,10 @@ type SpotifindService interface {
 
 // SpotifindApp struct
 type SpotifindApp struct {
-	s             spotifind.Spotifinder
-	csv           *csv.CsvHandler
-	configManager ConfigManager
+	s              spotifind.Spotifinder
+	csv            *csv.CsvHandler
+	configManager  ConfigManager
+	releaseManager ReleaseManager
 
 	cache          Cache
 	KnownPlaylists []string
@@ -64,7 +65,10 @@ func (a *SpotifindApp) startup(ctx context.Context) {
 		a.Alert(fmt.Sprintf("Error reading config: %v", err))
 		panic(err)
 	}
+
+	runtime.LogInfof(ctx, "Config save location: %s", cfg.SaveLocation)
 	a.csv = csv.NewCsvHandler(cfg.SaveLocation)
+	a.releaseManager = NewReleaseManager()
 
 	a.s, err = spotifind.NewSpotifind(configs[a.currentConfig], false)
 	if err != nil {
@@ -169,7 +173,7 @@ func (a *SpotifindApp) Markets() []string {
 
 func (a *SpotifindApp) Alert(t string) {
 	_, err := runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-		Title:   "Ooops!",
+		Title:   "Oops!",
 		Message: t,
 	})
 	if err != nil {
@@ -188,7 +192,8 @@ func (a *SpotifindApp) ErrorHandler(err error) {
 		}
 		return
 	}
-	a.Alert(err.Error())
+	a.Alert(fmt.Sprintf("Something went wrong: %v. "+
+		"If the error persists - open an issue here (https://github.com/je09/spotifind-app) and attach the log file (%s)", err, LogFileLocation))
 }
 
 func (a *SpotifindApp) IsPlaylistKnown(externalURL string) bool {
@@ -205,16 +210,37 @@ func (a *SpotifindApp) IsPlaylistKnown(externalURL string) bool {
 }
 
 func (a *SpotifindApp) LoadCachedSearch() []string {
-	return a.cache.PreviousSearch().Searches
+	res := a.cache.PreviousSearch().Searches
+	runtime.LogInfof(a.ctx, "Previous searches: %v", res)
+	return res
 }
 
 func (a *SpotifindApp) LoadCachedIgnore() []string {
-	return a.cache.PreviousSearch().Ignores
+	res := a.cache.PreviousSearch().Ignores
+	runtime.LogInfof(a.ctx, "Previous ignores: %v", res)
+	return res
 }
 
 func (a *SpotifindApp) SaveCache(search, ignore string) {
 	err := a.cache.Append(search, ignore)
 	if err != nil {
 		runtime.LogErrorf(a.ctx, "Error saving cache: %v", err)
+	}
+}
+
+func (a *SpotifindApp) CheckForNewRelease() {
+	release, err := a.releaseManager.NewRelease()
+	if err != nil {
+		runtime.LogErrorf(a.ctx, "Error checking for new release: %v", err)
+		return
+	}
+
+	if release != "" {
+		runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Title:         "New Release Available",
+			Message:       fmt.Sprintf("A new release (%s) is available. Please update your application.", release),
+			DefaultButton: "OK",
+		})
+		runtime.BrowserOpenURL(a.ctx, "https://github.com/je09/spotifind-app/releases/latest")
 	}
 }

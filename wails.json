@@ -9,5 +9,11 @@
   "author": {
     "name": "je09",
     "email": "je09@yandex.ru"
+  },
+  "info": {
+    "productName": "Spotifind",
+    "productVersion": "v0.0.13-alpha",
+    "copyright": "je09 Copyleft 2025",
+    "description": "A Spotify playlist contacts finder"
   }
 }

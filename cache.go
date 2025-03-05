@@ -64,12 +64,36 @@ func (c *CacheImpl) PreviousSearch() PreviousSearch {
 }
 
 func (c *CacheImpl) Append(search, ignore string) error {
+	if err := c.AppendSearch(search); err != nil {
+		return err
+	}
+	if err := c.AppendIgnore(ignore); err != nil {
+		return err
+	}
+
+	if err := c.Save(); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (c *CacheImpl) AppendSearch(search string) error {
 	for _, s := range c.prev.Searches {
 		if s == search {
 			return nil
 		}
 	}
 
+	c.prev.Searches = append(c.prev.Searches, search)
+	if len(c.prev.Searches) > 5 {
+		c.prev.Searches = c.prev.Searches[1:]
+	}
+
+	return nil
+}
+
+func (c *CacheImpl) AppendIgnore(ignore string) error {
 	for _, i := range c.prev.Ignores {
 		if i == ignore {
 			return nil
@@ -77,16 +101,8 @@ func (c *CacheImpl) Append(search, ignore string) error {
 	}
 
 	c.prev.Ignores = append(c.prev.Ignores, ignore)
-	c.prev.Searches = append(c.prev.Searches, search)
 	if len(c.prev.Ignores) > 5 {
 		c.prev.Ignores = c.prev.Ignores[1:]
-	}
-	if len(c.prev.Searches) > 5 {
-		c.prev.Searches = c.prev.Searches[1:]
-	}
-
-	if err := c.Save(); err != nil {
-		return err
 	}
 
 	return nil

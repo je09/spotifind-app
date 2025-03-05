@@ -26,6 +26,7 @@ func (c *ConfigManagerImpl) InitConfig() (Config, error) {
 
 	viper.AddConfigPath("$HOME")
 	viper.AddConfigPath("$HOME/spotifind")
+	viper.AddConfigPath("$HOME/.spotifind")
 	viper.AddConfigPath("$HOME/.config/spotifind")
 	viper.AddConfigPath(".")
 

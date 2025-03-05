@@ -41,7 +41,7 @@ If you're not experienced user, the process of the configuration and usage of th
 6. Read the "Developers Terms of Service" and "Spotify Developer Terms of Service" and click "I understand..." if you agree with them.
 7. Click "Save".
 8. Cool, you're doing great! Now click "Settings" on the right side of the page.
-9. Click "View Client Secret" and then copy both "Client ID" and "Client Secret" to the "spotyfind2.yml" file we set up on the first step. Simply replace the placeholders with your credentials.
+9. Click "View Client Secret" and then copy both "Client ID" and "Client Secret" to the "spotyfind.yml" file we set up on the first step. Simply replace the placeholders with your credentials.
 10. Save the file and you're ready to go!
 11. You may include credentials from multiple applications, so if you encounter any issues, you can switch to another application. Note, that this is not intended use and can violate the Spotify API terms of service.
 

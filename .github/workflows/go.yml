@@ -59,7 +59,7 @@ jobs:
           if [[ "${{ github.ref }}" == refs/tags/* ]]; then
             TAG_NAME="${GITHUB_REF#refs/tags/}"
           else
-            TAG_NAME="manual-$(date +'%Y%m%d-%H%M%S')"
+            TAG_NAME="manual-$(git describe --tags `git rev-list --tags --max-count=1`)"
           fi
           echo "TAG_NAME=$TAG_NAME" >> $GITHUB_ENV
 
