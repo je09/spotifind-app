@@ -20,7 +20,7 @@ var configs []spotifind.SpotifindAuth
 
 func main() {
 	l := NewLogger()
-	l.Info("starting spotifind-gui version: " + Version)
+	l.Info(fmt.Sprintf("Starting spotifind-gui version: %s", Version))
 
 	// Create an instance of the app structure
 	app := NewApp()
