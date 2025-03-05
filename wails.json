@@ -1,0 +1,19 @@
+{
+  "$schema": "https://wails.io/schemas/config.v2.json",
+  "name": "spotifind-gui",
+  "outputfilename": "spotifind-gui",
+  "frontend:install": "npm install",
+  "frontend:build": "npm run build",
+  "frontend:dev:watcher": "npm run dev",
+  "frontend:dev:serverUrl": "auto",
+  "author": {
+    "name": "je09",
+    "email": "je09@yandex.ru"
+  },
+  "info": {
+    "productName": "Spotifind",
+    "productVersion": "v0.0.1",
+    "copyright": "je09 Copyleft 2025",
+    "description": "A Spotify playlist contacts finder"
+  }
+}
