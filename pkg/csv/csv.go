@@ -29,6 +29,10 @@ func (c *CsvHandler) WriteToFile(playlist spotifind.Playlist) error {
 		return nil
 	}
 
+	if err := os.MkdirAll(filepath.Dir(c.Path), os.ModePerm); err != nil {
+		return err
+	}
+
 	file, err := os.OpenFile(c.Path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		return err
@@ -101,10 +105,6 @@ func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
 func (c *CsvHandler) SetFilePath(filePath string) error {
 	if c.Path == "" {
 		return fmt.Errorf("no save location set")
-	}
-
-	if err := os.MkdirAll(filepath.Dir(c.Path), os.ModePerm); err != nil {
-		return err
 	}
 
 	switch runtime.GOOS {

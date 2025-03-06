@@ -39,13 +39,13 @@ gui-setwails-version:
 # Build GUI for all platforms
 gui-darwin64:
 	echo "Building GUI for Darwin (version: $(VERSION))"
-	wails build -obfuscated -platform darwin/amd64 -o spotifind-gui-macos -ldflags "-X 'main.Version=$(VERSION)'"
+	wails build -platform darwin/amd64 -o spotifind-gui-macos -ldflags "-X 'main.Version=$(VERSION)'"
 	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos.app
 
 # Build GUI for all platforms
 gui-darwinarm64:
 	echo "Building GUI for Darwin (version: $(VERSION))"
-	wails build -obfuscated -platform darwin/arm64 -o spotifind-gui-macos-arm64 -ldflags "-X 'main.Version=$(VERSION)'"
+	wails build -platform darwin/arm64 -o spotifind-gui-macos-arm64 -ldflags "-X 'main.Version=$(VERSION)'"
 	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos-arm64.app
 
 gui-windows64:
