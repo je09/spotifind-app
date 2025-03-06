@@ -4,9 +4,12 @@ package csv
 
 import (
 	"encoding/csv"
+	"fmt"
 	"github.com/je09/spotifind"
 	"io"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -24,6 +27,10 @@ func NewCsvHandler(path string) *CsvHandler {
 func (c *CsvHandler) WriteToFile(playlist spotifind.Playlist) error {
 	if c.Path == "" {
 		return nil
+	}
+
+	if err := os.MkdirAll(filepath.Dir(c.Path), os.ModePerm); err != nil {
+		return err
 	}
 
 	file, err := os.OpenFile(c.Path, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
@@ -93,4 +100,19 @@ func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
 	}
 
 	return playlists, nil
+}
+
+func (c *CsvHandler) SetFilePath(filePath string) error {
+	if c.Path == "" {
+		return fmt.Errorf("no save location set")
+	}
+
+	switch runtime.GOOS {
+	case "windows":
+		c.Path = fmt.Sprintf("%s\\%s.csv", c.Path, filePath)
+	default:
+		c.Path = fmt.Sprintf("%s/%s.csv", c.Path, filePath)
+	}
+
+	return nil
 }

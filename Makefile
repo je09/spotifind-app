@@ -53,6 +53,10 @@ gui-windows64:
 	env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ CGO_CXXFLAGS="-IC:\msys64\mingw64\include" wails build -ldflags '-extldflags "-static" -X 'main.Version=$(VERSION)'' -skipbindings
 	mv ./build/bin/spotifind-gui.exe ./bin/spotifind-gui-windows.exe
 
+gui-windows64-native:
+	echo "Building GUI for Windows (version: $(VERSION))"
+	wails build -obfuscated -platform windows/amd64 -o spotifind-gui-windows -ldflags "-X 'main.Version=$(VERSION)'"
+
 # unstable for now
 gui-windowsarm64:
 	echo "Building GUI for Windows"

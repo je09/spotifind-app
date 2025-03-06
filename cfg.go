@@ -21,17 +21,23 @@ type Config struct {
 type ConfigManagerImpl struct{}
 
 func (c *ConfigManagerImpl) InitConfig() (Config, error) {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		os.Exit(1)
+	}
+
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("spotifind.yml")
 
-	viper.AddConfigPath("$HOME")
-	viper.AddConfigPath("$HOME/spotifind")
-	viper.AddConfigPath("$HOME/.spotifind")
-	viper.AddConfigPath("$HOME/.config/spotifind")
+	viper.AddConfigPath(fmt.Sprintf("%s", homeDir))
+	viper.AddConfigPath(fmt.Sprintf("%s/spotifind", homeDir))
+	viper.AddConfigPath(fmt.Sprintf("%s/Documents/spotifind", homeDir))
+	viper.AddConfigPath(fmt.Sprintf("%s/.spotifind", homeDir))
+	viper.AddConfigPath(fmt.Sprintf("%s/.config/spotifind", homeDir))
 	viper.AddConfigPath(".")
 
 	// For Windows
-	viper.AddConfigPath(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind", os.Getenv("$HOME")))
+	viper.AddConfigPath(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind", homeDir))
 
 	viper.SetEnvPrefix("spotifind")
 	viper.BindEnv("spotify_client_id")
@@ -41,7 +47,10 @@ func (c *ConfigManagerImpl) InitConfig() (Config, error) {
 		return Config{}, err
 	}
 	var cfg Config
-	err := viper.Unmarshal(&cfg)
+	err = viper.Unmarshal(&cfg)
+	if err != nil {
+		return Config{}, err
+	}
 	configs = cfg.Credits
 
 	//randomize configs order

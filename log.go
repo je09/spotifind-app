@@ -13,7 +13,7 @@ var (
 	logLocation = map[string]string{
 		"darwin":  "/Library/Logs/Spotifind/spotifind.log",
 		"linux":   "/.spotifind/spotifind.log",
-		"windows": "\\Roaming\\spotifind\\spotifind.log",
+		"windows": "\\AppData\\Roaming\\spotifind\\spotifind.log",
 	}
 )
 
@@ -33,6 +33,11 @@ func NewLogger() *Logger {
 		slog.Error("Error getting home directory", "error", err)
 		os.Exit(1)
 	}
+
+	if _, ok := logLocation[runtime.GOOS]; !ok {
+		panic("Unsupported OS")
+	}
+
 	path := homeDir + logLocation[runtime.GOOS]
 	err = os.MkdirAll(filepath.Dir(path), 0755)
 	if err != nil {
@@ -51,7 +56,7 @@ func NewLogger() *Logger {
 	defer rotatingLogger.Close()
 
 	// Create a multi-writer for console and file logging.
-	multiWriter := io.MultiWriter(os.Stdout, rotatingLogger)
+	multiWriter := io.MultiWriter(rotatingLogger, os.Stdout)
 
 	// Create a logger that writes to both stdout and the log file.
 	logger := slog.New(slog.NewTextHandler(multiWriter, &slog.HandlerOptions{Level: slog.LevelDebug}))
