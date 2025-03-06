@@ -22,7 +22,7 @@ The code is open-source, so you can check it yourself. If you're not comfortable
 3. Create a new folder in your User's folder and name it "spotifind".
 3. Download and save "[spotyfind.yml](https://raw.githubusercontent.com/je09/spotifind-app/refs/heads/main/spotifind-example.yml)" file to the "spotifind" folder you created in the previous step. Check if the file name is "spotifind.yml".
 4. Open the "spotifind.yml" with any text editor (Notepad for example) - (Left-click on the file -> Open with -> Notepad).
-5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for Windows is - 'C:/Users/<username>/Documents/Spotify Playlists', where <username> is your Windows username. Make sure, that there are quotes around the path!
+5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for Windows is - 'C:/Users/username/Documents/Spotify Playlists', where username is your Windows username. Make sure, that there are quotes around the path!
 4. Well done, save your file, but do not close it yet. You can go to the step 2 now!
 
 ### macOS
@@ -31,7 +31,7 @@ The code is open-source, so you can check it yourself. If you're not comfortable
 3. Create a new folder in your User's folder and name it "spotifind" or ".spotifind" if you don't want it to be visible.
 3. Download and save "[spotyfind.yml](https://raw.githubusercontent.com/je09/spotifind-app/refs/heads/main/spotifind-example.yml)" file to the "spotifind" folder you created in the previous step. Check if the file name is "spotifind.yml".
 4. Open the "spotifind.yml" with any text editor (TextEdit for example) - (Left-click on the file -> Open with -> TextEdit).
-5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for macOS is - '/Users/<username>/Documents/Spotify Playlists', where <username> is your macOS username. Make sure, that there are quotes around the path!
+5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for macOS is - '/Users/username/Documents/Spotify Playlists', where username is your macOS username. Make sure, that there are quotes around the path!
 4. Well done, save your file, but do not close it yet. You can go to the step 2 now!
 
 # Step 2 - Getting Spotify API credentials
