@@ -3,6 +3,10 @@ Spotifind is a Go-based application designed to search Spotify playlists for con
 It extracts contact information and musical styles from playlists, providing a comprehensive overview of the playlists' content.
 Works pretty similar to paid services like PlaylistSupply and Distrokid's playlist engine, but free and open-source.
 
+<figure>
+    <img src="imgs/main.jpg" alt="Main screen" width="220px" align="center">
+</figure>
+
 ⚠️ Be aware that this project is in the early stages of development and may not work as expected. And I know that writing cofings manually is pretty annoying, but at the moment it's not a priority, sorry.
 
 ## Features
@@ -22,7 +26,7 @@ The code is open-source, so you can check it yourself. If you're not comfortable
 3. Create a new folder in your User's folder and name it "spotifind".
 3. Download and save "[spotyfind.yml](https://raw.githubusercontent.com/je09/spotifind-app/refs/heads/main/spotifind-example.yml)" file to the "spotifind" folder you created in the previous step. Check if the file name is "spotifind.yml".
 4. Open the "spotifind.yml" with any text editor (Notepad for example) - (Left-click on the file -> Open with -> Notepad).
-5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for Windows is - 'C:/Users/username/Documents/Spotify Playlists', where username is your Windows username. Make sure, that there are quotes around the path!
+5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for Windows is - 'C:/Users/<username>/Documents/Spotify Playlists', where <username> is your Windows username. Make sure, that there are quotes around the path!
 4. Well done, save your file, but do not close it yet. You can go to the step 2 now!
 
 ### macOS
@@ -31,7 +35,6 @@ The code is open-source, so you can check it yourself. If you're not comfortable
 3. Create a new folder in your User's folder and name it "spotifind" or ".spotifind" if you don't want it to be visible.
 3. Download and save "[spotyfind.yml](https://raw.githubusercontent.com/je09/spotifind-app/refs/heads/main/spotifind-example.yml)" file to the "spotifind" folder you created in the previous step. Check if the file name is "spotifind.yml".
 4. Open the "spotifind.yml" with any text editor (TextEdit for example) - (Left-click on the file -> Open with -> TextEdit).
-5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for macOS is - '/Users/username/Documents/Spotify Playlists', where username is your macOS username. Make sure, that there are quotes around the path!
 4. Well done, save your file, but do not close it yet. You can go to the step 2 now!
 
 # Step 2 - Getting Spotify API credentials
@@ -59,6 +62,10 @@ Here are some notes on how to use the app:
 - For the market info - recommended option is to choose "Popular" as it will search for playlists in the most popular markets, but you can choose "Unpopular" or a specific country if you wish. Note, that "popularity" is strongly subjective.
 - Click "Search" button to start the search. The progress will be displayed in the "Progress" field. All the found results will be saved in the CSV file you specified in the "CSV File Name" field in the folder you specified on Step 1. Note that the next time you run the same search, the previous results won't be displayed, but they will be saved in the CSV file.
 - Enjoy!
+
+<figure>
+    <img src="imgs/search.jpg" alt="Search screen" width="350px" align="center">
+</figure>
 
 
 # Use in your own projects
