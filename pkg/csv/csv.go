@@ -4,9 +4,12 @@ package csv
 
 import (
 	"encoding/csv"
+	"fmt"
 	"github.com/je09/spotifind"
 	"io"
 	"os"
+	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 )
@@ -93,4 +96,23 @@ func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
 	}
 
 	return playlists, nil
+}
+
+func (c *CsvHandler) SetFilePath(filePath string) error {
+	if c.Path == "" {
+		return fmt.Errorf("no save location set")
+	}
+
+	if err := os.MkdirAll(filepath.Dir(c.Path), os.ModePerm); err != nil {
+		return err
+	}
+
+	switch runtime.GOOS {
+	case "windows":
+		c.Path = fmt.Sprintf("%s\\%s.csv", c.Path, filePath)
+	default:
+		c.Path = fmt.Sprintf("%s/%s.csv", c.Path, filePath)
+	}
+
+	return nil
 }

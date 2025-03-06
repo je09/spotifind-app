@@ -100,7 +100,11 @@ func (a *SpotifindApp) Search(q, ignore, market, csvFileName string) string {
 	queries := strings.Split(q, ",")
 	ignores := strings.Split(ignore, ",")
 
-	a.csv.Path = fmt.Sprintf("%s/%s.csv", a.csv.Path, csvFileName)
+	if err := a.csv.SetFilePath(csvFileName); err != nil {
+		runtime.LogErrorf(a.ctx, "Error setting CSV file path: %v", err)
+		return fmt.Sprintf("Error setting CSV file path: %v", err)
+	}
+
 	var err error
 	a.KnownPlaylists, err = a.csv.ReadFromFile()
 	if err != nil {

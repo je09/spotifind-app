@@ -39,19 +39,23 @@ gui-setwails-version:
 # Build GUI for all platforms
 gui-darwin64:
 	echo "Building GUI for Darwin (version: $(VERSION))"
-	wails build -platform darwin/amd64 -o spotifind-gui-macos -ldflags "-X 'main.Version=$(VERSION)'"
+	wails build -obfuscated -platform darwin/amd64 -o spotifind-gui-macos -ldflags "-X 'main.Version=$(VERSION)'"
 	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos.app
 
 # Build GUI for all platforms
 gui-darwinarm64:
 	echo "Building GUI for Darwin (version: $(VERSION))"
-	wails build -platform darwin/arm64 -o spotifind-gui-macos-arm64 -ldflags "-X 'main.Version=$(VERSION)'"
+	wails build -obfuscated -platform darwin/arm64 -o spotifind-gui-macos-arm64 -ldflags "-X 'main.Version=$(VERSION)'"
 	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos-arm64.app
 
 gui-windows64:
 	echo "Building GUI for Windows (version: $(VERSION))"
 	env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ CGO_CXXFLAGS="-IC:\msys64\mingw64\include" wails build -ldflags '-extldflags "-static" -X 'main.Version=$(VERSION)'' -skipbindings
 	mv ./build/bin/spotifind-gui.exe ./bin/spotifind-gui-windows.exe
+
+gui-windows64-native:
+	echo "Building GUI for Windows (version: $(VERSION))"
+	wails build -obfuscated -platform windows/amd64 -o spotifind-gui-windows -ldflags "-X 'main.Version=$(VERSION)'"
 
 # unstable for now
 gui-windowsarm64:

@@ -25,12 +25,12 @@ type CacheImpl struct {
 }
 
 func NewCache() *CacheImpl {
-	homedir := os.Getenv("HOME")
+	homeDir, _ := os.UserHomeDir()
 
-	path := fmt.Sprintf("%s/.spotifind/previous_searches.yml", homedir)
+	path := fmt.Sprintf("%s/.spotifind/previous_searches.yml", homeDir)
 	// if windows, use appdata
 	if runtime.GOOS == "windows" {
-		path = "%APPDATA%\\spotifind\\previous_searches.yml"
+		path = fmt.Sprintf(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind\\previous_searches.yml", homeDir))
 	}
 
 	return &CacheImpl{
