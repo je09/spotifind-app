@@ -3,34 +3,37 @@ Spotifind is a Go-based application designed to search Spotify playlists for con
 It extracts contact information and musical styles from playlists, providing a comprehensive overview of the playlists' content.
 Works pretty similar to paid services like PlaylistSupply and Distrokid's playlist engine, but free and open-source.
 
+⚠️ Be aware that this project is in the early stages of development and may not work as expected. And I know that writing cofings manually is pretty annoying, but at the moment it's not a priority, sorry.
+
 ## Features
 - **Search Playlists**: Search for playlists based on specific criteria.
 - **Extract Contacts**: Extract contact information from playlist descriptions.
 - **Analyze Styles**: Analyze and categorize musical styles from playlists.
-- **Progress Tracking**: Track the progress of playlist processing.
 
-# Installation
-## CLI
+# Why my anti-virus software is blocking the app?
+The app is not signed and it's Go. There's a huge problem with code written in Go false positives in anti-virus software. Anti-viruses tend to consider the Go-runtime libraries as a malware signature, which I can't do anything about at the moment.
+The code is open-source, so you can check it yourself. If you're not comfortable with running the app, you can always use the library in your own projects.
+
+# Step 1 - Installation
+## GUI
 ### Windows
-1. Download the latest release for Windows from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-cli-windows.exe.zip" or "spotifind-cli-windows-arm64.exe.zip" for ARM. If you do not recognize what arm64 is, you should download the first one.
-2. Extract the downloaded file in your User's folder or any other folder you're comfortable with.
-3. Download and save "[spotyfind2.yml](https://github.com/je09/spotifind)" file to the directory where the spotifind .exe file from the previous step is located.
+1. Download the latest release for Windows from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-gui-windows.exe.zip".
+2. Extract the downloaded file anywhere you like (in your User's folder or Desktop).
+3. Create a new folder in your User's folder and name it "spotifind".
+3. Download and save "[spotyfind.yml](https://raw.githubusercontent.com/je09/spotifind-app/refs/heads/main/spotifind-example.yml)" file to the "spotifind" folder you created in the previous step. Check if the file name is "spotifind.yml".
+4. Open the "spotifind.yml" with any text editor (Notepad for example) - (Left-click on the file -> Open with -> Notepad).
+5. Set your saveLocation (it's a folder where all the scanned playlists will be saved), recommended path for Windows is - 'C:/Users/<username>/Documents/Spotify Playlists', where <username> is your Windows username. Make sure, that there are quotes around the path!
+4. Well done, save your file, but do not close it yet. You can go to the step 2 now!
 
 ### macOS
-1. Download the latest release for macOS from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-cli-darwin.zip" or "spotifind-cli-darwin-arm64.zip" for Apple Silicon (M1,M2,etc.).
-2. Extract the downloaded file in your User's folder or any other folder you're comfortable with.
-3. Download and save "[spotyfind2.yml](https://github.com/je09/spotifind)" file to the directory where the spotifind binary file from the previous step is located.
+1. Download the latest release for Windows from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-gui-macos.zip".
+2. Extract the downloaded file to your "Applications" folder.
+3. Create a new folder in your User's folder and name it "spotifind" or ".spotifind" if you don't want it to be visible.
+3. Download and save "[spotyfind.yml](https://raw.githubusercontent.com/je09/spotifind-app/refs/heads/main/spotifind-example.yml)" file to the "spotifind" folder you created in the previous step. Check if the file name is "spotifind.yml".
+4. Open the "spotifind.yml" with any text editor (TextEdit for example) - (Left-click on the file -> Open with -> TextEdit).
+4. Well done, save your file, but do not close it yet. You can go to the step 2 now!
 
-### Linux
-If you use GNU/Linux based OS, I'm not even sure if you need my guidance, but here it is anyway:
-1. Download the latest release for Linux from the [releases page](https://github.com/je09/spotifind-app/releases) the name has to be "spotifind-cli-linux.zip" or "spotifind-cli-linux-arm64.zip" for ARM.
-2. Extract the downloaded file in your User's folder or any other folder you're comfortable with.
-3. Download and save "[spotyfind2.yml](https://github.com/je09/spotifind)" file to the directory where the spotifind binary file from the previous step is located.
-
-## GUI
-TODO
-
-# Setting Up
+# Step 2 - Getting Spotify API credentials
 If you're not experienced user, the process of the configuration and usage of the Spotifind can be a bit tricky, but don't worry, I'll guide you through the process.
 ###### First of all, you need to setup your Spotify Developer account and create a new application to get your API credentials. *it needs to be done so spotifind can communicate with SpotifyAPI and therefore extract the data from the playlists.*.
 1. Go to [Spotify Developer Dashboard](https://developer.spotify.com/dashboard/applications) and log in with your Spotify account (yes, it's safe, it's Spotify's site after all).
@@ -44,22 +47,17 @@ If you're not experienced user, the process of the configuration and usage of th
 9. Click "View Client Secret" and then copy both "Client ID" and "Client Secret" to the "spotyfind.yml" file we set up on the first step. Simply replace the placeholders with your credentials.
 10. Save the file and you're ready to go!
 11. You may include credentials from multiple applications, so if you encounter any issues, you can switch to another application. Note, that this is not intended use and can violate the Spotify API terms of service.
-
 **Note, do not share your credentials with anyone, as it can lead to the unauthorized access to your Spotify account!**
 
-# Usage
-## CLI
-This option is for those who are comfortable with the command line interface.
-
-### How to open and use the CLI (Command Line Interface)
-#### Windows
-todo
-
-#### macOS
-todo
-
-#### Linux
-todo
+# Step 3 - Running the app
+You can open the app by double-clicking on the "spotifind-gui-windows.exe" or "spotifind-gui-macos" file you downloaded and extracted in the first step.
+Here are some notes on how to use the app:
+- Place your search queries in the "Search Queries" field, separated by commas. This is the same as you'd type in the Spotify search bar.
+- Place your ignore queries in the "Ignore Queries" field, separated by commas. These are the strings that will be ignored in the description, name and styles of playlists. For example, if you're looking for "lofi ambient", you can ignore "rap,shoegaze, hip hop" to avoid playlists that contain these styles.
+- In the "CSV File Name" field, you can set the name of the file where the results will be saved. The sets automatically, but if you wish, you can change it.
+- For the market info - recommended option is to choose "Popular" as it will search for playlists in the most popular markets, but you can choose "Unpopular" or a specific country if you wish. Note, that "popularity" is strongly subjective.
+- Click "Search" button to start the search. The progress will be displayed in the "Progress" field. All the found results will be saved in the CSV file you specified in the "CSV File Name" field in the folder you specified on Step 1. Note that the next time you run the same search, the previous results won't be displayed, but they will be saved in the CSV file.
+- Enjoy!
 
 
 # Use in your own projects
