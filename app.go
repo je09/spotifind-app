@@ -20,7 +20,7 @@ type SpotifindApp struct {
 
 	h     SpotifindHandler
 	cfg   common.ConfigManager
-	rls   ReleaseManager
+	rls   common.ReleaseManager
 	cache Cache
 
 	// searchOnce is used in case of multiple miss-clicks on search button.
@@ -54,7 +54,7 @@ func (a *SpotifindApp) startup(ctx context.Context) {
 	}
 
 	// New release checker.
-	a.rls = NewReleaseManager()
+	a.rls = common.NewReleaseManager()
 
 	// Initialize spotifind-handler.
 	a.h, err = NewHandler(configs[0], cfg.SaveLocation)
@@ -136,11 +136,11 @@ func (a *SpotifindApp) ErrorHandler(err error) {
 		return
 	}
 	a.Alert(fmt.Sprintf("Something went wrong: %v. "+
-		"If the error persists - open an issue here (https://github.com/je09/spotifind-app) and attach the log file (%s)", err, LogFileLocation))
+		"If the error persists - open an issue here (https://github.com/je09/spotifind-app) and attach the log file (%s)", err, common.LogFileLocation))
 }
 
 func (a *SpotifindApp) CheckForNewRelease() {
-	release, err := a.rls.NewRelease()
+	release, err := a.rls.NewRelease(Version)
 	if err != nil {
 		runtime.LogErrorf(a.ctx, "Error checking for new release: %v", err)
 		return

@@ -4,6 +4,7 @@ import (
 	"embed"
 	"fmt"
 	"github.com/je09/spotifind"
+	"github.com/je09/spotifind-app/common"
 	"github.com/wailsapp/wails/v2"
 	"github.com/wailsapp/wails/v2/pkg/logger"
 	"github.com/wailsapp/wails/v2/pkg/options"
@@ -19,7 +20,7 @@ var assets embed.FS
 var configs []spotifind.SpotifindAuth
 
 func main() {
-	l := NewLogger()
+	l := common.NewLogger()
 	l.Info(fmt.Sprintf("Starting spotifind-gui version: %s", Version))
 
 	// Create an instance of the app structure
