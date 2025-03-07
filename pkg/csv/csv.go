@@ -14,17 +14,23 @@ import (
 	"strings"
 )
 
-type CsvHandler struct {
+type ReaderWriter interface {
+	WriteToFile(playlist spotifind.Playlist) error
+	ReadFromFile() (map[string]struct{} /* playlist uris */, error)
+	SetFilePath(filePath string) error
+}
+
+type CSV struct {
 	Path string
 }
 
-func NewCsvHandler(path string) *CsvHandler {
-	return &CsvHandler{
+func New(path string) ReaderWriter {
+	return &CSV{
 		Path: path,
 	}
 }
 
-func (c *CsvHandler) WriteToFile(playlist spotifind.Playlist) error {
+func (c *CSV) WriteToFile(playlist spotifind.Playlist) error {
 	if c.Path == "" {
 		return nil
 	}
@@ -70,7 +76,7 @@ func (c *CsvHandler) WriteToFile(playlist spotifind.Playlist) error {
 	return nil
 }
 
-func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
+func (c *CSV) ReadFromFile() (map[string]struct{}, error) {
 	file, err := os.Open(c.Path)
 	if err != nil {
 		return nil, err
@@ -78,7 +84,7 @@ func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
 	defer file.Close()
 
 	reader := csv.NewReader(file)
-	playlists := make([]string, 0)
+	playlists := make(map[string]struct{})
 
 	for {
 		record, err := reader.Read()
@@ -96,13 +102,13 @@ func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
 			},
 		}
 
-		playlists = append(playlists, playlist.ExternalURLs["spotify"])
+		playlists[playlist.ExternalURLs["spotify"]] = struct{}{}
 	}
 
 	return playlists, nil
 }
 
-func (c *CsvHandler) SetFilePath(filePath string) error {
+func (c *CSV) SetFilePath(filePath string) error {
 	if c.Path == "" {
 		return fmt.Errorf("no save location set")
 	}

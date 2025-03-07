@@ -2,10 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/je09/spotifind-app/common"
 	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
-	"runtime"
 )
 
 type PreviousSearch struct {
@@ -25,23 +25,16 @@ type CacheImpl struct {
 }
 
 func NewCache() *CacheImpl {
-	homeDir, _ := os.UserHomeDir()
-
-	path := fmt.Sprintf("%s/.spotifind/previous_searches.yml", homeDir)
-	// if windows, use appdata
-	if runtime.GOOS == "windows" {
-		path = fmt.Sprintf(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind\\previous_searches.yml", homeDir))
-	}
-
+	pb := common.NewPathBuilder()
 	return &CacheImpl{
-		path: path,
+		path: pb.CacheLocation(),
 	}
 }
 
 func (c *CacheImpl) Load() error {
 	// if file does not exist, create it
 	if _, err := os.Stat(c.path); os.IsNotExist(err) {
-		c.Save()
+		_ = c.Save()
 	}
 
 	data, err := os.ReadFile(c.path)

@@ -1,9 +1,8 @@
 VERSION=$(shell git describe --tags `git rev-list --tags --max-count=1`)
 
 clean:
-	rm -rf bin
-	mkdir bin
-
+	rm -rf bin release
+	mkdir bin release
 # Build the CLI for all platforms
 cli-darwin64:
 	echo "Building CLI for Darwin"
@@ -29,7 +28,7 @@ cli-windowsarm64:
 	echo "Building CLI for Windows"
 	GOOS=windows GOARCH=arm64 go build -o bin/spotifind-cli-windows-arm64.exe ./cli
 
-cli-all: cli-darwin64 cli-darwinarm64 cli-linux64 cli-linuxarm64 cli-windows64 cli-windowsarm64
+cli-all: cli-darwin64 cli-darwinarm64 cli-linux64 cli-windows64
 cli: cli-all
 
 gui-setwails-version:
@@ -41,17 +40,24 @@ gui-darwin64:
 	echo "Building GUI for Darwin (version: $(VERSION))"
 	wails build -platform darwin/amd64 -o spotifind-gui-macos -ldflags "-X 'main.Version=$(VERSION)'"
 	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos.app
+	cp -r ./bin/spotifind-gui-macos.app ./bin/Spotifind.app
+	(cd ./bin && zip -r ../release/spotifind-gui-macos.zip ./Spotifind.app)
+	rm -rf ./bin/Spotifind.app
 
 # Build GUI for all platforms
 gui-darwinarm64:
 	echo "Building GUI for Darwin (version: $(VERSION))"
 	wails build -platform darwin/arm64 -o spotifind-gui-macos-arm64 -ldflags "-X 'main.Version=$(VERSION)'"
 	mv ./build/bin/spotifind-gui.app ./bin/spotifind-gui-macos-arm64.app
+	cp -r ./bin/spotifind-gui-macos-arm64.app ./bin/Spotifind.app
+	(cd ./bin && zip -r ../release/spotifind-gui-macos-arm64.zip ./Spotifind.app)
+	rm -rf ./bin/Spotifind.app
 
 gui-windows64:
 	echo "Building GUI for Windows (version: $(VERSION))"
 	env GOOS=windows GOARCH=amd64 CGO_ENABLED=1 CC=x86_64-w64-mingw32-gcc CXX=x86_64-w64-mingw32-g++ CGO_CXXFLAGS="-IC:\msys64\mingw64\include" wails build -ldflags '-extldflags "-static" -X 'main.Version=$(VERSION)'' -skipbindings
 	mv ./build/bin/spotifind-gui.exe ./bin/spotifind-gui-windows.exe
+	zip -rj ./release/spotifind-gui-windows.zip ./bin/spotifind-gui-windows.exe
 
 gui-windows64-native:
 	echo "Building GUI for Windows (version: $(VERSION))"

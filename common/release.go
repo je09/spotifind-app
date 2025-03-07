@@ -1,4 +1,4 @@
-package main
+package common
 
 import (
 	"encoding/json"
@@ -12,7 +12,7 @@ const (
 )
 
 type ReleaseManager interface {
-	NewRelease() (string, error)
+	NewRelease(v string) (string, error)
 }
 
 type ReleaseManagerImpl struct {
@@ -22,7 +22,7 @@ func NewReleaseManager() *ReleaseManagerImpl {
 	return &ReleaseManagerImpl{}
 }
 
-func (r *ReleaseManagerImpl) NewRelease() (string, error) {
+func (r *ReleaseManagerImpl) NewRelease(v string) (string, error) {
 	resp, err := http.Get("https://api.github.com/repos/je09/spotifind-app/releases/latest")
 	if err != nil {
 		return "", err
@@ -40,8 +40,8 @@ func (r *ReleaseManagerImpl) NewRelease() (string, error) {
 		return "", err
 	}
 
-	log.Infof("Current version: %s", Version)
-	if release.TagName == Version || Version == dev {
+	log.Infof("Current version: %s", v)
+	if release.TagName == v || v == dev {
 		return "", nil
 	}
 

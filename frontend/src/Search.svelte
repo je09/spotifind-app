@@ -5,8 +5,8 @@
         LogInfo, BrowserOpenURL
     } from "../wailsjs/runtime/runtime.js";
     import {
-        ReturnResults,
-        ReturnProgress
+        Results,
+        ProgressBar
     } from "../wailsjs/go/main/SpotifindApp.js";
     export let results = [];
     let progress = { Done: 0, Total: 100 }; // Initialize progress
@@ -27,8 +27,8 @@
         progress = p;
     });
 
-    ReturnResults();
-    ReturnProgress();
+    Results();
+    ProgressBar();
 
 </script>
 
