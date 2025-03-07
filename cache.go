@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/je09/spotifind-app/common"
 	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
@@ -24,7 +25,7 @@ type CacheImpl struct {
 }
 
 func NewCache() *CacheImpl {
-	pb := NewPathBuilder()
+	pb := common.NewPathBuilder()
 	return &CacheImpl{
 		path: pb.CacheLocation(),
 	}

@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/je09/spotifind-app/common"
 	"strings"
 	"sync"
 
@@ -18,7 +19,7 @@ type SpotifindApp struct {
 	ctx context.Context
 
 	h     SpotifindHandler
-	cfg   ConfigManager
+	cfg   common.ConfigManager
 	rls   ReleaseManager
 	cache Cache
 
@@ -29,7 +30,7 @@ type SpotifindApp struct {
 // NewApp creates a new SpotifindApp application struct
 func NewApp() *SpotifindApp {
 	return &SpotifindApp{
-		cfg:   &ConfigManagerImpl{},
+		cfg:   &common.ConfigManagerImpl{},
 		cache: NewCache(),
 	}
 }
@@ -38,11 +39,12 @@ func (a *SpotifindApp) startup(ctx context.Context) {
 	a.ctx = ctx
 
 	// Load config and initialize global config for hotswap.
-	cfg, err := a.cfg.InitConfig()
+	cfg, cfgs, err := a.cfg.InitConfig()
 	if err != nil {
 		a.Alert(fmt.Sprintf("Error reading config: %v", err))
 		runtime.LogFatalf(a.ctx, "Error reading config: %v", err)
 	}
+	configs = cfgs
 	runtime.LogInfof(ctx, "Config save location: %s", cfg.SaveLocation)
 
 	// Load previously searched queries and ignores from cache.

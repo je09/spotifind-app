@@ -1,4 +1,4 @@
-package main
+package cli
 
 import (
 	"errors"
@@ -18,7 +18,7 @@ type SpotifyHandler struct {
 	spotifind spotifind.Search
 	Csv       csv.CSV
 
-	KnownPlaylists []string
+	KnownPlaylists map[string]struct{}
 	currentConfig  int
 }
 
@@ -193,14 +193,9 @@ func (s *SpotifyHandler) OutputPlaylist(playlist spotifind.Playlist) {
 }
 
 func (s *SpotifyHandler) IsPlaylistKnown(externalURL string) bool {
-	if len(s.KnownPlaylists) == 0 {
-		return false
+	if _, ok := s.KnownPlaylists[externalURL]; ok {
+		return true
 	}
 
-	for _, p := range s.KnownPlaylists {
-		if p == externalURL {
-			return true
-		}
-	}
 	return false
 }

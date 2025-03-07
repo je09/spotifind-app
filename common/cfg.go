@@ -1,4 +1,4 @@
-package main
+package common
 
 import (
 	"github.com/je09/spotifind"
@@ -8,7 +8,7 @@ import (
 
 // ConfigManager interface
 type ConfigManager interface {
-	InitConfig() (Config, error)
+	InitConfig() (Config, []spotifind.SpotifindAuth, error)
 }
 
 type Config struct {
@@ -18,7 +18,7 @@ type Config struct {
 
 type ConfigManagerImpl struct{}
 
-func (c *ConfigManagerImpl) InitConfig() (Config, error) {
+func (c *ConfigManagerImpl) InitConfig() (Config, []spotifind.SpotifindAuth, error) {
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("spotifind.yml")
 
@@ -32,21 +32,21 @@ func (c *ConfigManagerImpl) InitConfig() (Config, error) {
 	_ = viper.BindEnv("spotify_client_secret")
 
 	if err := viper.ReadInConfig(); err != nil {
-		return Config{}, err
+		return Config{}, nil, err
 	}
 
 	var cfg Config
 	if err := viper.Unmarshal(&cfg); err != nil {
-		return Config{}, err
+		return Config{}, nil, err
 	}
 
-	configs = cfg.Credits
+	cfgs := cfg.Credits
 
 	// Randomize configs order
-	for i := range configs {
+	for i := range cfgs {
 		j := rand.Intn(i + 1)
-		configs[i], configs[j] = configs[j], configs[i]
+		cfgs[i], cfgs[j] = cfgs[j], cfgs[i]
 	}
 
-	return cfg, nil
+	return cfg, cfgs, nil
 }

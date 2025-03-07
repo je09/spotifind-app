@@ -1,6 +1,7 @@
 package main
 
 import (
+	"github.com/je09/spotifind-app/common"
 	"gopkg.in/natefinch/lumberjack.v2"
 	"io"
 	"log/slog"
@@ -19,7 +20,7 @@ type Logger struct {
 }
 
 func NewLogger() *Logger {
-	pb := NewPathBuilder()
+	pb := common.NewPathBuilder()
 	path := pb.LogLocation()
 	err := os.MkdirAll(filepath.Dir(path), 0755)
 	if err != nil {
