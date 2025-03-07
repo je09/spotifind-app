@@ -6,15 +6,6 @@ import (
 	"log/slog"
 	"os"
 	"path/filepath"
-	"runtime"
-)
-
-var (
-	logLocation = map[string]string{
-		"darwin":  "/Library/Logs/Spotifind/spotifind.log",
-		"linux":   "/.spotifind/spotifind.log",
-		"windows": "\\AppData\\Roaming\\spotifind\\spotifind.log",
-	}
 )
 
 var (
@@ -28,18 +19,9 @@ type Logger struct {
 }
 
 func NewLogger() *Logger {
-	homeDir, err := os.UserHomeDir()
-	if err != nil {
-		slog.Error("Error getting home directory", "error", err)
-		os.Exit(1)
-	}
-
-	if _, ok := logLocation[runtime.GOOS]; !ok {
-		panic("Unsupported OS")
-	}
-
-	path := homeDir + logLocation[runtime.GOOS]
-	err = os.MkdirAll(filepath.Dir(path), 0755)
+	pb := NewPathBuilder()
+	path := pb.LogLocations()
+	err := os.MkdirAll(filepath.Dir(path), 0755)
 	if err != nil {
 		slog.Error("Error creating log directory", "error", err)
 		os.Exit(1)

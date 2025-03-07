@@ -5,7 +5,6 @@ import (
 	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
-	"runtime"
 )
 
 type PreviousSearch struct {
@@ -25,16 +24,9 @@ type CacheImpl struct {
 }
 
 func NewCache() *CacheImpl {
-	homeDir, _ := os.UserHomeDir()
-
-	path := fmt.Sprintf("%s/.spotifind/previous_searches.yml", homeDir)
-	// if windows, use appdata
-	if runtime.GOOS == "windows" {
-		path = fmt.Sprintf(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind\\previous_searches.yml", homeDir))
-	}
-
+	pb := NewPathBuilder()
 	return &CacheImpl{
-		path: path,
+		path: pb.CacheLocation(),
 	}
 }
 

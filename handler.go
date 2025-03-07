@@ -28,7 +28,7 @@ type SpotifindHandler interface {
 type Handler struct {
 	s              spotifind.Spotifinder
 	csv            csv.ReaderWriter
-	knownPlaylists []string
+	knownPlaylists map[string]struct{}
 	currCfg        int
 
 	plChan spotifind.SpotifindChan
@@ -42,10 +42,11 @@ func NewHandler(auth spotifind.SpotifindAuth, resSavePath string) (SpotifindHand
 	}
 
 	return &Handler{
-		s:      s,
-		csv:    csv.New(resSavePath),
-		plChan: make(spotifind.SpotifindChan),
-		prChan: make(spotifind.ProgressChan),
+		s:              s,
+		csv:            csv.New(resSavePath),
+		plChan:         make(spotifind.SpotifindChan),
+		prChan:         make(spotifind.ProgressChan),
+		knownPlaylists: make(map[string]struct{}),
 	}, nil
 }
 
@@ -130,15 +131,9 @@ func (h *Handler) Reconnect(ctx context.Context) error {
 }
 
 func (h *Handler) isKnown(playlistURI string) bool {
-	// todo: refactor to use maps
-	if len(h.knownPlaylists) == 0 {
-		return false
+	if _, ok := h.knownPlaylists[playlistURI]; ok {
+		return true
 	}
 
-	for _, p := range h.knownPlaylists {
-		if p == playlistURI {
-			return true
-		}
-	}
 	return false
 }

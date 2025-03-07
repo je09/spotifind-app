@@ -16,7 +16,7 @@ import (
 
 type ReaderWriter interface {
 	WriteToFile(playlist spotifind.Playlist) error
-	ReadFromFile() ([]string /*playlist names*/, error)
+	ReadFromFile() (map[string]struct{} /* playlist uris */, error)
 	SetFilePath(filePath string) error
 }
 
@@ -76,7 +76,7 @@ func (c *CSV) WriteToFile(playlist spotifind.Playlist) error {
 	return nil
 }
 
-func (c *CSV) ReadFromFile() ([]string /*playlist names*/, error) {
+func (c *CSV) ReadFromFile() (map[string]struct{}, error) {
 	file, err := os.Open(c.Path)
 	if err != nil {
 		return nil, err
@@ -84,7 +84,7 @@ func (c *CSV) ReadFromFile() ([]string /*playlist names*/, error) {
 	defer file.Close()
 
 	reader := csv.NewReader(file)
-	playlists := make([]string, 0)
+	playlists := make(map[string]struct{})
 
 	for {
 		record, err := reader.Read()
@@ -102,7 +102,7 @@ func (c *CSV) ReadFromFile() ([]string /*playlist names*/, error) {
 			},
 		}
 
-		playlists = append(playlists, playlist.ExternalURLs["spotify"])
+		playlists[playlist.ExternalURLs["spotify"]] = struct{}{}
 	}
 
 	return playlists, nil
