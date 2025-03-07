@@ -14,6 +14,11 @@ import (
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 )
 
+const (
+	releaseURL            = "https://github.com/je09/spotifind-app/releases/latest"
+	installationManualURL = "https://github.com/je09/spotifind-app?tab=readme-ov-file#step-1---installation"
+)
+
 // SpotifindApp struct
 type SpotifindApp struct {
 	ctx context.Context
@@ -41,7 +46,10 @@ func (a *SpotifindApp) startup(ctx context.Context) {
 	// Load config and initialize global config for hotswap.
 	cfg, cfgs, err := a.cfg.InitConfig()
 	if err != nil {
-		a.Alert(fmt.Sprintf("Error reading config: %v", err))
+		pb := common.NewPathBuilder()
+		a.Alert(fmt.Sprintf("Can't find \"spotifind.yml\" file anywhere. Please check the instruction!\n"+
+			"Here are the paths I've tried so far %v", pb.ConfigLocations()))
+		runtime.BrowserOpenURL(a.ctx, installationManualURL)
 		runtime.LogFatalf(a.ctx, "Error reading config: %v", err)
 	}
 	configs = cfgs
@@ -152,7 +160,7 @@ func (a *SpotifindApp) CheckForNewRelease() {
 			Message:       fmt.Sprintf("A new release (%s) is available. Please update your application.", release),
 			DefaultButton: "Ok",
 		})
-		runtime.BrowserOpenURL(a.ctx, "https://github.com/je09/spotifind-app/releases/latest")
+		runtime.BrowserOpenURL(a.ctx, releaseURL)
 	}
 }
 

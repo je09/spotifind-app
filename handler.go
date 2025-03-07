@@ -88,12 +88,14 @@ func (h *Handler) Results(ctx context.Context, p spotifind.SpotifindChan) {
 		}
 		p <- pl
 	}
+	close(p)
 }
 
 func (h *Handler) Progress(p spotifind.ProgressChan) {
 	for prog := range h.prChan {
 		p <- prog
 	}
+	close(p)
 }
 
 func (h *Handler) LoadKnownPlaylists(fileName string) error {
