@@ -1,11 +1,21 @@
 # Description: Configuration file for Spotifind
 
 # --- GUI ---
-# For Windows users, recommended saveLocation is 'C:/Users/<username>/Documents/Spotify Playlists', where <username> is your Windows username.
+# For Windows users, recommended saveLocation is 'C:\Users\<username>\Documents\Spotify Playlists', where <username> is your Windows username.
 # For Mac users, recommended saveLocation is '/Users/<username>/Documents/Spotify Playlists', where <username> is your Mac username.
+# Please ensure that "saveLocation" has quotation marks like in the example above; it's crucial!
 saveLocation: ''
 
 # --- Spotify API ---
+# You can find the instruction here: https://github.com/je09/spotifind-app?tab=readme-ov-file#step-2---getting-spotify-api-credentials
+# Keep in mind, you can insert multiple credits here:
+# credits:
+#   - clientId: 'example-1'
+#     clientSecret: 'example-1-secret
+#
+#   - clientId: 'example-2'
+#     clientSecret: 'example-2-secret
+# Please ensure that all the formatting and tabulation are the same. This is crucial and can lead to issues when using an application.
 credits:
   - clientId: '<client_id>'
     clientSecret: '<client_secret>'
