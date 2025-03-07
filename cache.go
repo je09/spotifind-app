@@ -41,7 +41,7 @@ func NewCache() *CacheImpl {
 func (c *CacheImpl) Load() error {
 	// if file does not exist, create it
 	if _, err := os.Stat(c.path); os.IsNotExist(err) {
-		c.Save()
+		_ = c.Save()
 	}
 
 	data, err := os.ReadFile(c.path)

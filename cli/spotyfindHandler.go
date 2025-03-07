@@ -16,7 +16,7 @@ const (
 
 type SpotifyHandler struct {
 	spotifind spotifind.Search
-	Csv       csv.CsvHandler
+	Csv       csv.CSV
 
 	KnownPlaylists []string
 	currentConfig  int
@@ -35,7 +35,7 @@ func NewSpotifyHandler() (*SpotifyHandler, error) {
 
 	return &SpotifyHandler{
 		spotifind: spotifind,
-		Csv:       csv.CsvHandler{},
+		Csv:       csv.CSV{},
 	}, nil
 }
 

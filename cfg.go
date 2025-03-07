@@ -40,8 +40,8 @@ func (c *ConfigManagerImpl) InitConfig() (Config, error) {
 	viper.AddConfigPath(fmt.Sprintf("%s\\AppData\\Roaming\\spotifind", homeDir))
 
 	viper.SetEnvPrefix("spotifind")
-	viper.BindEnv("spotify_client_id")
-	viper.BindEnv("spotify_client_secret")
+	_ = viper.BindEnv("spotify_client_id")
+	_ = viper.BindEnv("spotify_client_secret")
 
 	if err := viper.ReadInConfig(); err != nil {
 		return Config{}, err
@@ -58,10 +58,6 @@ func (c *ConfigManagerImpl) InitConfig() (Config, error) {
 		j := rand.Intn(i + 1)
 		configs[i], configs[j] = configs[j], configs[i]
 
-	}
-
-	if err != nil {
-		return Config{}, err
 	}
 
 	return cfg, nil

@@ -14,17 +14,23 @@ import (
 	"strings"
 )
 
-type CsvHandler struct {
+type ReaderWriter interface {
+	WriteToFile(playlist spotifind.Playlist) error
+	ReadFromFile() ([]string /*playlist names*/, error)
+	SetFilePath(filePath string) error
+}
+
+type CSV struct {
 	Path string
 }
 
-func NewCsvHandler(path string) *CsvHandler {
-	return &CsvHandler{
+func New(path string) ReaderWriter {
+	return &CSV{
 		Path: path,
 	}
 }
 
-func (c *CsvHandler) WriteToFile(playlist spotifind.Playlist) error {
+func (c *CSV) WriteToFile(playlist spotifind.Playlist) error {
 	if c.Path == "" {
 		return nil
 	}
@@ -70,7 +76,7 @@ func (c *CsvHandler) WriteToFile(playlist spotifind.Playlist) error {
 	return nil
 }
 
-func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
+func (c *CSV) ReadFromFile() ([]string /*playlist names*/, error) {
 	file, err := os.Open(c.Path)
 	if err != nil {
 		return nil, err
@@ -102,7 +108,7 @@ func (c *CsvHandler) ReadFromFile() ([]string /*playlist names*/, error) {
 	return playlists, nil
 }
 
-func (c *CsvHandler) SetFilePath(filePath string) error {
+func (c *CSV) SetFilePath(filePath string) error {
 	if c.Path == "" {
 		return fmt.Errorf("no save location set")
 	}
