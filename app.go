@@ -22,8 +22,8 @@ type SpotifindApp struct {
 	rls   ReleaseManager
 	cache Cache
 
+	// searchOnce is used in case of multiple miss-clicks on search button.
 	searchOnce sync.Once
-	configOnce sync.Once
 }
 
 // NewApp creates a new SpotifindApp application struct
@@ -37,20 +37,24 @@ func NewApp() *SpotifindApp {
 func (a *SpotifindApp) startup(ctx context.Context) {
 	a.ctx = ctx
 
-	err := a.cache.Load()
-	if err != nil {
-		runtime.LogFatalf(a.ctx, "Error loading cache: %v", err)
-	}
-
+	// Load config and initialize global config for hotswap.
 	cfg, err := a.cfg.InitConfig()
 	if err != nil {
 		a.Alert(fmt.Sprintf("Error reading config: %v", err))
 		runtime.LogFatalf(a.ctx, "Error reading config: %v", err)
 	}
-
 	runtime.LogInfof(ctx, "Config save location: %s", cfg.SaveLocation)
+
+	// Load previously searched queries and ignores from cache.
+	err = a.cache.Load()
+	if err != nil {
+		runtime.LogFatalf(a.ctx, "Error loading cache: %v", err)
+	}
+
+	// New release checker.
 	a.rls = NewReleaseManager()
 
+	// Initialize spotifind-handler.
 	a.h, err = NewHandler(configs[0], cfg.SaveLocation)
 	if err != nil {
 		runtime.LogFatalf(a.ctx, "Error starting spotifind handler: %v", err)
@@ -78,7 +82,7 @@ func (a *SpotifindApp) Search(q, ignore, market, csvFileName string) {
 	})
 }
 
-func (a *SpotifindApp) ReturnProgress() {
+func (a *SpotifindApp) ProgressBar() {
 	res := make(spotifind.ProgressChan)
 	go a.h.Progress(res)
 
@@ -90,7 +94,7 @@ func (a *SpotifindApp) ReturnProgress() {
 	}()
 }
 
-func (a *SpotifindApp) ReturnResults() {
+func (a *SpotifindApp) Results() {
 	res := make(spotifind.SpotifindChan)
 	go a.h.Results(a.ctx, res)
 
@@ -106,10 +110,6 @@ func (a *SpotifindApp) ReturnResults() {
 		})
 		a.ctx.Done()
 	}()
-}
-
-func (a *SpotifindApp) Markets() []string {
-	return spotifind.MarketsAll
 }
 
 func (a *SpotifindApp) Alert(t string) {
@@ -137,6 +137,27 @@ func (a *SpotifindApp) ErrorHandler(err error) {
 		"If the error persists - open an issue here (https://github.com/je09/spotifind-app) and attach the log file (%s)", err, LogFileLocation))
 }
 
+func (a *SpotifindApp) CheckForNewRelease() {
+	release, err := a.rls.NewRelease()
+	if err != nil {
+		runtime.LogErrorf(a.ctx, "Error checking for new release: %v", err)
+		return
+	}
+
+	if release != "" {
+		_, _ = runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
+			Title:         "New Release Available",
+			Message:       fmt.Sprintf("A new release (%s) is available. Please update your application.", release),
+			DefaultButton: "Ok",
+		})
+		runtime.BrowserOpenURL(a.ctx, "https://github.com/je09/spotifind-app/releases/latest")
+	}
+}
+
+func (a *SpotifindApp) Markets() []string {
+	return spotifind.MarketsAll
+}
+
 func (a *SpotifindApp) LoadCachedSearch() []string {
 	res := a.cache.PreviousSearch().Searches
 	runtime.LogInfof(a.ctx, "Previous searches: %v", res)
@@ -153,22 +174,5 @@ func (a *SpotifindApp) SaveCache(search, ignore string) {
 	err := a.cache.Append(search, ignore)
 	if err != nil {
 		runtime.LogErrorf(a.ctx, "Error saving cache: %v", err)
-	}
-}
-
-func (a *SpotifindApp) CheckForNewRelease() {
-	release, err := a.rls.NewRelease()
-	if err != nil {
-		runtime.LogErrorf(a.ctx, "Error checking for new release: %v", err)
-		return
-	}
-
-	if release != "" {
-		_, _ = runtime.MessageDialog(a.ctx, runtime.MessageDialogOptions{
-			Title:         "New Release Available",
-			Message:       fmt.Sprintf("A new release (%s) is available. Please update your application.", release),
-			DefaultButton: "Ok",
-		})
-		runtime.BrowserOpenURL(a.ctx, "https://github.com/je09/spotifind-app/releases/latest")
 	}
 }

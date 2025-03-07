@@ -20,7 +20,7 @@ type Logger struct {
 
 func NewLogger() *Logger {
 	pb := NewPathBuilder()
-	path := pb.LogLocations()
+	path := pb.LogLocation()
 	err := os.MkdirAll(filepath.Dir(path), 0755)
 	if err != nil {
 		slog.Error("Error creating log directory", "error", err)

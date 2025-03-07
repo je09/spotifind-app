@@ -45,7 +45,7 @@ var (
 type PathBuilder interface {
 	ConfigLocations() []string
 	CacheLocation() string
-	LogLocations() string
+	LogLocation() string
 }
 
 type PathBuilderImpl struct {
@@ -81,7 +81,7 @@ func (p *PathBuilderImpl) CacheLocation() string {
 	}
 }
 
-func (p *PathBuilderImpl) LogLocations() string {
+func (p *PathBuilderImpl) LogLocation() string {
 	switch p.os {
 	case "darwin":
 		return LogLocationDarwin
